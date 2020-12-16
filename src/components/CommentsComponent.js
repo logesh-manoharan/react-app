@@ -23,7 +23,10 @@ function RenderComments({dish})
 const Comment = (props) => {
     const cmt = props.dish.map((dish) => {
         return(
-            <RenderComments dish={dish}/>
+            <>
+                <h3>Comments: </h3>
+                <RenderComments dish={dish}/>
+            </>
         );
     });
 

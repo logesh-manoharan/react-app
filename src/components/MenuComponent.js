@@ -8,7 +8,7 @@ import {Card, CardBody, CardImg, CardImgOverlay, CardTitle, CardText, Media} fro
     function RenderMenu({dish, onClick})
     {
         return(
-            <Card onClick={() => onClick(dish.id)}>
+            <Card>
                 <CardImg width="100%" src={dish.image}></CardImg>
                 <CardImgOverlay>
                     <CardTitle>
@@ -22,16 +22,16 @@ import {Card, CardBody, CardImg, CardImgOverlay, CardTitle, CardText, Media} fro
     const Menu = (props) => { 
         const menu = props.dishes.map((dish) => {
             return(
-                <div key={dish.id} className="col-12 col-md-5 m-1">
-                    <RenderMenu dish={dish} onClick={props.onClick}/>
-                </div>
+                <RenderMenu dish={dish} onClick={props.onClick}/>
             );
         });
 
         return(
             <div className="container">
                 <div className="row'">
-                    {menu}
+                    <div className="col-12 col-md-5">
+                        {menu}
+                    </div>
                 </div>
             </div>
         );

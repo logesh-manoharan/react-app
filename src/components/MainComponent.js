@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
-import {Navbar, NavbarBrand} from 'reactstrap';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent';
 import Menu from './MenuComponent';
 import Dish from './DishComponent';
+
+import Home from './HomeComponent';
 import Comment from './CommentsComponent';
 import {DISHES} from '../shared/dishes';
+
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 class Main extends Component{
     constructor(props){
@@ -21,14 +26,26 @@ class Main extends Component{
     }
 
     render(){
+
+        const HomePage = () => {
+            return(
+                <Home />
+            );
+        }
+
+        const MenuPage = () => {
+            return(
+                <Menu dishes={this.state.dishes}/>
+            );
+        }
         return(
             <div>
-                <Navbar dark color="primary">
-                    <div className="container">
-                        <NavbarBrand>Ristornate Con Fusion</NavbarBrand>
-                    </div>
-                </Navbar>
-                <Menu dishes={this.state.dishes} onClick = {(dishId) => this.selectDish(dishId)}/>
+                <Header />
+                <Switch>
+                    <Route path="/home" component={HomePage}/>
+                    <Route exact path="/menu" component={MenuPage}/>
+                    <Redirect to="/home"/> 
+                </Switch>
 
                 <div className="container">
                     <div className="row">
@@ -36,11 +53,12 @@ class Main extends Component{
                             <Dish dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)} />
                         </div>  
                         <div className="col-12 col-md-5">
-                            <h3>Comments: </h3>
                             <Comment dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)} />
                         </div>
                     </div>
                 </div>
+
+                <Footer />
             </div>
         );
     }

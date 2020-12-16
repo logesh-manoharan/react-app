@@ -1,22 +1,33 @@
 import React, {Component} from 'react';
 import { Card, CardTitle, CardImg, CardText, CardBody } from 'reactstrap';
 
-class Dish extends Component{
-    render(){
-        return(
-            <Card>
-                <CardImg top src={this.props.dish.image}></CardImg>
-                <CardBody>
-                    <CardTitle>
-                        {this.props.dish.name}
-                    </CardTitle>
-                    <CardText>  
-                        {this.props.dish.description}
-                    </CardText>
-                </CardBody>
-            </Card>
-        );
-    };
+function RenderDish({dish})
+{
+    return(
+        <Card>
+            <CardImg top src={dish.image}></CardImg>
+            <CardBody>
+                <CardTitle>
+                    {dish.name}
+                </CardTitle>
+                <CardText>  
+                    {dish.description}
+                </CardText>
+            </CardBody>
+        </Card>
+    );
 }
+
+const Dish = (props) => {
+    const dish = props.dish.map((dish) => {
+        return(
+            <RenderDish dish={dish}/>
+        );
+    })
+    return(
+        dish
+    );
+}
+
 
 export default Dish;

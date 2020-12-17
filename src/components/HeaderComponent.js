@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import {Nav, NavItem, Navbar, NavbarBrand, Jumbotron, NavbarToggler, Collapse} from 'reactstrap';
+import {Nav, NavItem, Navbar, NavbarBrand, Jumbotron, NavbarToggler, Collapse,
+    Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button} from 'reactstrap';
 
 class Header extends Component{
 
@@ -9,11 +10,26 @@ class Header extends Component{
         super(props);
 
         this.state = {
-            isNavOpen: false
+            isNavOpen: false,
+            isModalOpen: false
         };
+
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
-    
+    toggleModal(){
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }    
+
+    handleLogin(event){
+        this.toggleModal();
+
+        alert("Username: "+this.username.value+"Password: "+this.password.value+"Remember: "+this.remember.value);
+        event.preventDefault();
+    }
 
     render() {
         return(
@@ -55,6 +71,12 @@ class Header extends Component{
                                 </NavItem>
                             </Nav>
                         </Collapse>
+
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <Button outline onClick={this.toggleModal}><span className="fa fa-sign-in fa-lg"></span> Login</Button>
+                            </NavItem>
+                        </Nav>
                     </div>
                 </Navbar>
 
@@ -68,6 +90,47 @@ class Header extends Component{
                         </div>
                     </div>
                 </Jumbotron>
+
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader className="bg-warning text-white" toggle={this.toggleModal}>Login</ModalHeader>
+
+                    <ModalBody>
+                        <Form onSubmit={this.handleLogin}>
+                            <FormGroup>
+                                <Label htmlFor="username" md={2}>Username</Label>
+                                <div className="col-md-10">
+                                    <Input type="text" placeholder="Username" id="username" name="username"
+                                    innerRef={(input) => this.username = input}/>
+                                </div>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="password" md={2}>Password</Label>
+                                <div className="col-md-10">
+                                    <Input type="password" placeholder="Password" id="password" name="password"
+                                    innerRef={(input) => this.password = input}/>
+                                </div>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label check>
+                                    <div className="offset-md-2 col-md-10">
+                                        <Input type="checkbox" id="remember" name="remember"
+                                        innerRef={(input) => this.remember = input}/> Remember me
+                                    </div>
+                                </Label>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <div className="offset-md-2 col-md-6">
+                                    <Button type="submit" className="bg-primary">
+                                        <i className="fa fa-sign-in fa-lg"></i> Login
+                                    </Button>
+                                </div>
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                </Modal>
             </>
         );
     }

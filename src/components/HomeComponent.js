@@ -29,7 +29,10 @@ function Home(props)
                     <Breadcrumb>
                         <BreadcrumbItem active>Home</BreadcrumbItem>
                     </Breadcrumb>
-                </div>
+            </div>
+            <div className="row row-header">
+                <h3>Home</h3>
+            </div>
             <div className="row align-items-start">
                 <div className="col-12 col-md m-1">
                     <RenderCard item={props.dish}/>

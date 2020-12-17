@@ -1,31 +1,39 @@
 import React, {Component} from 'react';
-import { Card, CardTitle, CardImg, CardText, CardBody } from 'reactstrap';
+import { Card, CardTitle, CardImg, CardText, CardBody, CardFooter } from 'reactstrap';
 
-function RenderDish({dish})
+function RenderDish({dish, comment})
 {
     return(
-        <Card>
-            <CardImg top src={dish.image}></CardImg>
-            <CardBody>
-                <CardTitle>
-                    {dish.name}
-                </CardTitle>
-                <CardText>  
-                    {dish.description}
-                </CardText>
-            </CardBody>
-        </Card>
+        <>
+            <div className="col-12 col-md-7 m-1">
+                <Card>
+                    <CardImg top src={dish.image}></CardImg>
+                    <CardBody>
+                        <CardTitle>
+                            {dish.name}
+                        </CardTitle>
+                        <CardText>  
+                            {dish.description}
+                        </CardText>
+                    </CardBody>
+                </Card>
+            </div>
+
+            <div className="col-12 col-md-3 m-1">
+                <h6>Comments: </h6>
+                {comment.comment}
+            </div>
+        </>
     );
 }
 
 const Dish = (props) => {
-    const dish = props.dish.map((dish) => {
-        return(
-            <RenderDish dish={dish}/>
-        );
-    })
     return(
-        dish
+        <div className="container">
+            <div className="row">
+                <RenderDish dish={props.dish} comment={props.comment}/>
+            </div>
+        </div>
     );
 }
 

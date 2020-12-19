@@ -7,8 +7,65 @@ const required = (val) => val && val.length;
 const minLength = (len) => (val) => (val) && (val.length >= len);
 const maxLength = (len) => (val) => !(val) || (val.length <= len); 
 
-class Dish extends Component {
+function RenderDish({dish}) {
+    return(
+        <div className="col-12 col-md-7 m-1">
+            <Card>
+                <CardImg top src={dish.image}></CardImg>
+                <CardBody>
+                    <CardTitle>
+                        {dish.name}
+                    </CardTitle>
+                    <CardText>  
+                        {dish.description}
+                    </CardText>
+                </CardBody>
+            </Card>
+        </div>
+    );
+}
 
+function RenderComments({comments, addComment, dishId}) {
+    if(comments != null) {
+        return(
+            <div className="col-12 col-md-3 m-1">
+                <h6>Comments: </h6>
+                <ul className="list-unstyled">
+                    {comments.map((comment) => {
+                        return(
+                            <li key={comment.id}>
+                                <p>{comment.comment}</p>
+                                <p>--{comment.author} {comment.date}</p>
+                            </li>
+                        );
+                    })}
+                </ul>
+                <CommentForm dishId={dishId} addComment={addComment}/>
+            </div>
+        );    
+    }
+    else {
+        return(
+            <div></div>
+        );
+    }
+}
+
+function Dish(props) {
+    return(
+            <div className="row">
+                <RenderDish dish={props.dish} />
+
+                <RenderComments comments={props.comments} 
+                addComment={props.addComment}
+                dishId = {props.dish.id}/>
+            </div>
+            
+    );
+}
+
+
+class CommentForm extends Component {
     constructor(props) {
         super(props);
 
@@ -17,6 +74,7 @@ class Dish extends Component {
         }
 
         this.toggleModal = this.toggleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     toggleModal()
@@ -26,36 +84,15 @@ class Dish extends Component {
         });
     }
 
+    handleSubmit(values) {
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+    }
+
     render() {
-        const dish = this.props.dish;
-        const comment = this.props.comment;
         return(
             <>
-                <div className="row">
-                    <div className="col-12 col-md-7 m-1">
-                        <Card>
-                            <CardImg top src={dish.image}></CardImg>
-                            <CardBody>
-                                <CardTitle>
-                                    {dish.name}
-                                </CardTitle>
-                                <CardText>  
-                                    {dish.description}
-                                </CardText>
-                            </CardBody>
-                        </Card>
-                    </div>
-
-                    <div className="col-12 col-md-3 m-1">
-                        <h6>Comments: </h6>
-                        {comment.comment}
-                        <div className="row">
-                            <div className="offset-md-2 col-md-5">
-                                <Button outline onClick={this.toggleModal}><i className="fa fa-pencil fa-lg"></i> Submit Comment</Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Button outline onClick={this.toggleModal}><i className="fa fa-pencil fa-lg"></i> Submit Comment</Button>
 
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader className="bg-warning text-white" toggle={this.toggleModal}>
@@ -63,7 +100,7 @@ class Dish extends Component {
                     </ModalHeader>
 
                     <ModalBody>
-                        <LocalForm>
+                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label md={2} htmlFor="rating">Rating</Label>
                                 <Col md={10}>
@@ -81,16 +118,16 @@ class Dish extends Component {
                             </Row>
 
                             <Row className="form-group">
-                                <Label md={2} htmlFor="name">Your Name</Label>
+                                <Label md={2} htmlFor="author">Your Name</Label>
                                 <Col md={10}>
-                                    <Control.text model=".name" 
-                                    id="name"
-                                    name="name"
+                                    <Control.text model=".author" 
+                                    id="author"
+                                    name="author"
                                     className="form-control"
                                     validators={{required, minLength: minLength(2), maxLength: maxLength(15)}}/>
 
                                     <Errors className="text-danger"
-                                    model=".name"
+                                    model=".author"
                                     show="touched" 
                                     messages={{
                                         required: 'Please fill your name',

@@ -4,6 +4,8 @@ ModalBody } from 'reactstrap';
 import {Control, LocalForm, Errors} from 'react-redux-form';
 import {Loading} from './LoadingComponent';
 
+import { baseurl } from '../shared/baseurl';
+
 const required = (val) => val && val.length; 
 const minLength = (len) => (val) => (val) && (val.length >= len);
 const maxLength = (len) => (val) => !(val) || (val.length <= len); 
@@ -12,7 +14,7 @@ function RenderDish({dish}) {
     return(
         <div className="col-12 col-md-7 m-1">
             <Card>
-                <CardImg top src={dish.image}></CardImg>
+                <CardImg top src={baseurl + dish.image}></CardImg>
                 <CardBody>
                     <CardTitle>
                         {dish.name}

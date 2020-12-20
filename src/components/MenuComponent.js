@@ -4,6 +4,8 @@ import {Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb,
 import {Link} from 'react-router-dom';
 import {Loading} from './LoadingComponent';
 
+import { baseurl } from '../shared/baseurl';
+
     //Creation of FUNCTIONAL COMPONENT 
 
     function RenderMenu({dish, onClick})
@@ -11,7 +13,7 @@ import {Loading} from './LoadingComponent';
         return(
             <Card>
                 <Link to={`/menu/${dish.id}`}>
-                    <CardImg width="100%" src={dish.image}></CardImg>
+                    <CardImg width="100%" src={baseurl + dish.image}></CardImg>
                     <CardImgOverlay>
                         <CardTitle>
                             {dish.name}

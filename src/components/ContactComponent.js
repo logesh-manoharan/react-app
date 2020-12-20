@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Breadcrumb, BreadcrumbItem, Row, Label, Col, Button, Card, CardHeader, CardBody} from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Control, LocalForm, Errors} from 'react-redux-form';
+import {Control, LocalForm, Errors, actions} from 'react-redux-form';
 
 
 const required = (val) => val && val.length;
@@ -21,6 +21,7 @@ class Contact extends Component{
     handleSubmit(values) {
         console.log('Current state: '+JSON.stringify(values));
         alert('Current state: '+JSON.stringify(values));
+        this.props.resetFeedbackForm();
         //preventDefault() method's purpose is after submitting and clicking OK in ALERT box 'entered details will remain in that INPUT ELEMENT'
     }
 
@@ -66,7 +67,7 @@ class Contact extends Component{
                     </CardHeader>
 
                     <CardBody>
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        <LocalForm model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
@@ -167,9 +168,9 @@ class Contact extends Component{
                             </Row>
 
                             <Row className="form-group">
-                                <Label htmlFor="feedback" md={2}>Feedback</Label>
+                                <Label htmlFor="message" md={2}>Feedback</Label>
                                 <Col md={10}>
-                                    <Control.textarea model=".feedback" id="feedback" name="feedback" placeholder="Enter your Feedback..."
+                                    <Control.textarea model=".message" id="message" name="message" placeholder="Enter your Feedback..."
                                     className="form-control"></Control.textarea>
                                 </Col>
                             </Row>

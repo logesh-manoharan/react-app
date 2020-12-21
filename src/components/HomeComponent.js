@@ -5,6 +5,8 @@ import {Loading} from './LoadingComponent';
 
 import {baseurl} from '../shared/baseurl';
 
+import {FadeTransform} from 'react-animation-components';
+
 function RenderCard({item, isLoading, errMess})
 {
     if(isLoading) {
@@ -21,18 +23,20 @@ function RenderCard({item, isLoading, errMess})
 
     else {
         return(
-            <Card>
-                <CardImg src={baseurl + item.image}></CardImg>
-                <CardBody>
-                    <CardTitle>
-                        {item.name}
-                    </CardTitle>
-                    {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle>: null}
-                    <CardText>
-                        {item.description}
-                    </CardText>
-                </CardBody>
-            </Card>
+            <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)'}}>
+                <Card>
+                    <CardImg src={baseurl + item.image}></CardImg>
+                    <CardBody>
+                        <CardTitle>
+                            {item.name}
+                        </CardTitle>
+                        {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle>: null}
+                        <CardText>
+                            {item.description}
+                        </CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
         );
     }
 }

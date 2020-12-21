@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import { Card, CardTitle, CardImg, CardText, CardBody, Button, CardFooter, Row, Col, Label, Modal, ModalHeader,
+import { Card, CardTitle, CardImg, CardText, CardBody, Button, Row, Col, Label, Modal, ModalHeader,
 ModalBody } from 'reactstrap';
 import {Control, LocalForm, Errors} from 'react-redux-form';
 import {Loading} from './LoadingComponent';
 
 import { baseurl } from '../shared/baseurl';
+
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 const required = (val) => val && val.length; 
 const minLength = (len) => (val) => (val) && (val.length >= len);
@@ -13,37 +15,43 @@ const maxLength = (len) => (val) => !(val) || (val.length <= len);
 function RenderDish({dish}) {
     return(
         <div className="col-12 col-md-7 m-1">
-            <Card>
-                <CardImg top src={baseurl + dish.image}></CardImg>
-                <CardBody>
-                    <CardTitle>
-                        {dish.name}
-                    </CardTitle>
-                    <CardText>  
-                        {dish.description}
-                    </CardText>
-                </CardBody>
-            </Card>
+            <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)'}}>
+                <Card>
+                    <CardImg top src={baseurl + dish.image}></CardImg>
+                    <CardBody>
+                        <CardTitle>
+                            {dish.name}
+                        </CardTitle>
+                        <CardText>  
+                            {dish.description}
+                        </CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
         </div>
     );
 }
 
-function RenderComments({comments, addComment, dishId}) {
+function RenderComments({comments, postComment, dishId}) {
     if(comments != null) {
         return(
             <div className="col-12 col-md-3 m-1">
                 <h6>Comments: </h6>
                 <ul className="list-unstyled">
-                    {comments.map((comment) => {
-                        return(
-                            <li key={comment.id}>
-                                <p>{comment.comment}</p>
-                                <p>--{comment.author} {comment.date}</p>
-                            </li>
-                        );
-                    })}
+                    <Stagger in>
+                        {comments.map((comment) => {
+                            return(
+                                <Fade in>
+                                    <li key={comment.id}>
+                                        <p>{comment.comment}</p>
+                                        <p>--{comment.author} {comment.date}</p>
+                                    </li>
+                                </Fade>
+                            );
+                        })}
+                    </Stagger>
                 </ul>
-                <CommentForm dishId={dishId} addComment={addComment}/>
+                <CommentForm dishId={dishId} postComment={postComment}/>
             </div>
         );    
     }
@@ -81,7 +89,7 @@ function Dish(props) {
                     <RenderDish dish={props.dish} />
 
                     <RenderComments comments={props.comments} 
-                    addComment={props.addComment}
+                    postComment={props.postComment}
                     dishId = {props.dish.id}/>
                 </div>
             </div>
@@ -114,7 +122,7 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {

@@ -1,22 +1,28 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardHeader, CardBody } from 'reactstrap';
 import {Link} from 'react-router-dom';
+import {baseurl} from '../shared/baseurl';
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 function About(props) {
-    const leader = props.leaders.map((leader) => {
+    const leader = props.leaders.leaders.map((leader) => {
         return(
             <>
-                <div className="row row-content">
-                    <div className="col-12 col-md-2">
-                        <img src={leader.image} />
-                    </div>
+                <Stagger in>
+                    <Fade in enterOpacity={0.85} exitOpacity={0.25}>
+                        <div className="row row-content">
+                            <div className="col-12 col-md-2">
+                                <img src={baseurl + leader.image} />
+                            </div>
 
-                    <div className="col-12 col-md-10">
-                        <h6>{leader.name}</h6>
-                        <p>{leader.designation}</p> <br />
-                        <p>{leader.description}</p>
-                    </div>
-                </div>
+                            <div className="col-12 col-md-10">
+                                    <h6>{leader.name}</h6>
+                                    <p>{leader.designation}</p> <br />
+                                    <p>{leader.description}</p>
+                            </div>
+                        </div>
+                    </Fade>
+                </Stagger>
             </>
         );
     });

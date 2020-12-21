@@ -21,7 +21,7 @@ class Contact extends Component{
     handleSubmit(values) {
         console.log('Current state: '+JSON.stringify(values));
         alert('Current state: '+JSON.stringify(values));
-        this.props.resetFeedbackForm();
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.emailid, values.message);
         //preventDefault() method's purpose is after submitting and clicking OK in ALERT box 'entered details will remain in that INPUT ELEMENT'
     }
 
